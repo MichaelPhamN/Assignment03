@@ -1,16 +1,22 @@
 
 public class PegSolitaire {	
-	public static boolean solve(boolean[][] pegs, StringStack solution){
+	public static boolean solve(boolean[][] pegs, StringStack solution){	
+		for(int i = 0; i< pegs.length; i++){
+			for(int j = 0; j < pegs[i].length; j++){
+				if(pegs[i][j] == true){
+					System.out.print(" . ");
+				}else{
+					System.out.print(" X ");
+				}				
+			}
+			System.out.println();
+		}
+		System.exit(0);
+		
 		int startX = 0;
 		int startY = 0;
-		
-		if(solve(pegs, startX, startY,))
-		
-		return false;
-		
-	}
-	
-	public static boolean solve(boolean[][] pegs, int startX, int startY, int endX, int endY, StringStack solution){
+		int endX = 3;
+		int endY = 3;
 		// Jump Up
 		if(tryMove(pegs, startX, startY, 0, 2, endX, endY, solution)){
 			return true;
@@ -30,6 +36,7 @@ public class PegSolitaire {
 		if(tryMove(pegs, startX, startY, 2, 0, endX, endY,solution)){
 			return true;
 		}
+		return false;
 	}
 	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
 		// Move out of bound
@@ -118,35 +125,38 @@ public class PegSolitaire {
 		// Jump to point (1, 6)
 		if(endX == 1 && endY == 6){
 			return false;
-		}		
-		
-		// Check if Jump to point (3,3)
-		/* If all points equal true except for (0,0),(0,1),(1,0),(1,1),(7,7),(7,6),(7,7)
-		 * (6,6), (0,7), (0,6), (1,7), (1,6), (7,0), (6,0), (7,1), (6,1) => return true (finish)
-		 * else // not succeed
-		 *  run again from start X, startY with different direction
-		 */
-		
-		if(endX == 3 && endY == 3){
-			
 		}
+		
+		
 		
 		return false;
 		
 	}
-	public static void main(String[] args) {
-		boolean[][] pegs = {
-					{false, false, false, false, false, false, false},
-					{false, false, false, false, false, false, false},
-					{false, false, false, false, false, false, false},
-					{false, false, false, true, false, false, false},
-					{false, false, false, false, false, false, false},
-					{false, false, false, false, false, false, false},
-					{false, false, false, false, false, false, false},
-				};
-		
+	
+	public static String getSolution(boolean[][] board) {
 		StringStack stack = new StringStack();
-		solve(pegs, stack);
+		if (solve(board, stack)) {
+			String cat = stack.pop();
+			String s;
+			while ((s = stack.pop()) != null) {
+				cat = s + ", " + cat;
+			}
+			return cat;
+		}
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		boolean[][] testSimple = { { false, false, false, false, false, false, false },
+				{ false, false, false, false, false, false, false },
+				{ false, false, false, false, false, false, false },
+				{ false, true, true, false, false, false, false },
+				{ false, false, false, false, false, false, false },
+				{ false, false, false, false, false, false, false },
+				{ false, false, false, false, false, false, false } };
+		
+		String simpleSolution = getSolution(testSimple);		
+		
 		
 	}
 
