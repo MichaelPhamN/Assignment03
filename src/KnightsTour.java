@@ -66,21 +66,29 @@ public class KnightsTour {
 	public static void main(String[] args) {
 		int n = 5;
 		int[][] board = new int[n][n];
-		
-		for (int x = 0; x < n; x++) {
-			for (int y = 0; y < n; y++) {
-				// Start the knight at (x, y)
-				board[x][y] = 1;
-				if (solve(board, x, y, 1)) {
-					for (int i = 0; i < board.length; i++) {
-						System.out.println(Arrays.toString(board[i]));
-					}
-					return;
-				} else {
-					board[x][y] = 0;
-				}
-			}
-		}
+		board[0][0] = 1;
+		solve(board, 0, 0, 1);
+//		for(int i = 0; i< board.length; i++){
+//			for(int j = 0; j < board[i].length; j++){				
+//				System.out.print(board[i][j] + " ");								
+//			}
+//			System.out.println();
+//		}
+//		System.exit(0);
+//		for (int x = 0; x < n; x++) {
+//			for (int y = 0; y < n; y++) {
+//				// Start the knight at (x, y)
+//				board[x][y] = 1;
+//				if (solve(board, x, y, 1)) {
+//					for (int i = 0; i < board.length; i++) {
+//						System.out.println(Arrays.toString(board[i]));
+//					}
+//					return;
+//				} else {
+//					board[x][y] = 0;
+//				}
+//			}
+//		}
 		
 
 	}

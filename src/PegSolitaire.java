@@ -1,5 +1,6 @@
 
 public class PegSolitaire {	
+	private static int move = 32;
 	public static boolean solve(boolean[][] pegs, StringStack solution){	
 		for(int i = 0; i< pegs.length; i++){
 			for(int j = 0; j < pegs[i].length; j++){
@@ -25,28 +26,35 @@ public class PegSolitaire {
 	}
 	
 	public static boolean solve(boolean[][] pegs, int startX, int startY, int endX, int endY, StringStack solution){
-		if(tryMove(pegs, startX, startY, startX, startY + 2, endX, endY, solution)){
+		if(tryMove(pegs, startX, startY, 0, 2, endX, endY, solution)){
 			return true;
 		}
 		
 		// Jump Down
-		if(tryMove(pegs, startX, startY, startX, startY - 2, endX, endY, solution)){
+		if(tryMove(pegs, startX, startY, 0, - 2, endX, endY, solution)){
 			return true;
 		}
 		
 		// Jump Left
-		if(tryMove(pegs, startX, startY, startX - 2, startY, endX, endY, solution)){
+		if(tryMove(pegs, startX, startY, 2, 0, endX, endY, solution)){
 			return true;
 		}
 		
 		// Jump Right
-		if(tryMove(pegs, startX, startY, startX + 2, startY, endX, endY,solution)){
+		if(tryMove(pegs, startX, startY, 2, 0, endX, endY,solution)){
 			return true;
 		}
 		return false;
 	}
 	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
-		// Check can not move
+		// Check if we have solved 
+		if(jumpX == endX && jumpY == endY){
+			if((pegs[jumpX][jumpY] == false) && (move == 1)){
+					return true;
+			}else{
+				
+			}
+		}
 		
 		// Move out of bound
 		if(jumpX < 0 || jumpX >= pegs.length 
