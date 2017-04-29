@@ -1,52 +1,56 @@
 
-public class PegSolitaire {	
-	private static int move = 32;
+public class PegSolitaire {
+	
 	public static boolean solve(boolean[][] pegs, StringStack solution){	
-		for(int i = 0; i< pegs.length; i++){
-			for(int j = 0; j < pegs[i].length; j++){
-				if(pegs[i][j] == true){
-					System.out.print(" . ");
-				}else{
-					System.out.print(" X ");
-				}				
-			}
-			System.out.println();
-		}
-		System.exit(0);
+//		for(int i = 0; i< pegs.length; i++){
+//			for(int j = 0; j < pegs[i].length; j++){
+//				if(pegs[i][j] == true){
+//					System.out.print(" . ");
+//				}else{
+//					System.out.print(" X ");
+//				}				
+//			}
+//			System.out.println();
+//		}
+//		System.exit(0);
 		
 		int startX = 0;
 		int startY = 0;
+		int jumpX = 0; 
+		int jumpY = 0;
 		int endX = 3;
-		int endY = 3;		
-
-		if(solve(pegs, startX, startY, endX, endY, solution)){
+		int endY = 3;	
+		int move = 32;
+		solve(pegs, startX, startY, jumpX, jumpY, endX, endY, move, solution);
+		System.exit(0);
+		if(solve(pegs, startX, startY, jumpX, jumpY, endX, endY, move, solution)){
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean solve(boolean[][] pegs, int startX, int startY, int endX, int endY, StringStack solution){
-		if(tryMove(pegs, startX, startY, 0, 2, endX, endY, solution)){
+	public static boolean solve(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, int move,StringStack solution){
+		if(tryMove(pegs, startX, startY, 0, 2, endX, endY, move,solution)){
 			return true;
 		}
 		
 		// Jump Down
-		if(tryMove(pegs, startX, startY, 0, - 2, endX, endY, solution)){
+		if(tryMove(pegs, startX, startY, 0, - 2, endX, endY, move,solution)){
 			return true;
 		}
 		
 		// Jump Left
-		if(tryMove(pegs, startX, startY, 2, 0, endX, endY, solution)){
+		if(tryMove(pegs, startX, startY, 2, 0, endX, endY, move,solution)){
 			return true;
 		}
 		
 		// Jump Right
-		if(tryMove(pegs, startX, startY, 2, 0, endX, endY,solution)){
+		if(tryMove(pegs, startX, startY, 2, 0, endX, endY,move,solution)){
 			return true;
 		}
 		return false;
 	}
-	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
+	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, int move, StringStack solution){
 		// Check if we have solved 
 		if(jumpX == endX && jumpY == endY){
 			if((pegs[jumpX][jumpY] == false) && (move == 1)){
@@ -152,18 +156,18 @@ public class PegSolitaire {
 		
 	}
 	
-	public static String getSolution(boolean[][] board) {
-		StringStack stack = new StringStack();
-		if (solve(board, stack)) {
-			String cat = stack.pop();
-			String s;
-			while ((s = stack.pop()) != null) {
-				cat = s + ", " + cat;
-			}
-			return cat;
-		}
-		return null;
-	}
+//	public static String getSolution(boolean[][] board) {
+//		StringStack stack = new StringStack();
+//		if (solve(board, stack)) {
+//			String cat = stack.pop();
+//			String s;
+//			while ((s = stack.pop()) != null) {
+//				cat = s + ", " + cat;
+//			}
+//			return cat;
+//		}
+//		return null;
+//	}
 	
 	public static void main(String[] args) {
 		boolean[][] testSimple = { { false, false, false, false, false, false, false },
@@ -173,8 +177,9 @@ public class PegSolitaire {
 				{ false, false, false, false, false, false, false },
 				{ false, false, false, false, false, false, false },
 				{ false, false, false, false, false, false, false } };
-		
-		String simpleSolution = getSolution(testSimple);		
+		StringStack stack = new StringStack();
+		solve(testSimple, stack);
+//		String simpleSolution = getSolution(testSimple);		
 		
 		
 	}
