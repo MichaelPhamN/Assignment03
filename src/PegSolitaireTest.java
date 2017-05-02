@@ -51,8 +51,7 @@ public class PegSolitaireTest {
 						"Couldn't find PegSolitaire.java! Run this from the same Eclipse project as PegSolitaire with no package.");
 			}
 
-			boolean[][] testSimple = { 
-					{ false, false, false, false, false, false, false },
+			boolean[][] testSimple = { { false, false, false, false, false, false, false },
 					{ false, false, false, false, false, false, false },
 					{ false, false, false, false, false, false, false },
 					{ false, true, true, false, false, false, false },
@@ -69,15 +68,13 @@ public class PegSolitaireTest {
 				System.out.println("Solution seen: "+simpleSolution);
 				return;
 			}
-			boolean[][] testUnsolvable = { 
-					{ false, false, false, false, false, false, false },
+			boolean[][] testUnsolvable = { { false, false, false, false, false, false, false },
 					{ false, false, true, true, false, false, false },
 					{ false, true, false, false, false, false, false },
 					{ false, false, true, false, false, false, false },
 					{ false, false, false, false, false, false, false },
 					{ false, false, false, false, false, false, false },
-					{ false, false, false, false, false, false, false } 
-					};
+					{ false, false, false, false, false, false, false } };
 			String unsolvableSolution = getSolution(testUnsolvable);
 			if (unsolvableSolution != null) {
 				System.out.println(
@@ -88,12 +85,12 @@ public class PegSolitaireTest {
 			}
 			System.out.println("Attempting to solve 'plus' board:");
 			boolean[][] testPlus = { 
+					{ false, false, false, false, false, false, false },
 					{ false, false, false, true, false, false, false },
-					{ false, false, false, false,  false, false, false },
-					{ false, false, false, false,  false, false, false }, 
-					{ false, true,  true,  true,  true,  true,  false },
-					{ false, false, false, true,  false, false, false },
-					{ false, false, false, true,  false, false, false },
+					{ false, false, false, true, false, false, false }, 
+					{ true, false, false, true, true, true, false },
+					{ false, false, false, true, false, false, false },
+					{ false, false, false, true, false, false, false },
 					{ false, false, false, false, false, false, false } };
 			String plusSolution = getSolution(testPlus);
 			if (plusSolution != null) {
@@ -113,12 +110,9 @@ public class PegSolitaireTest {
 				System.out.println("Your code didn't find a solution! 0/30");
 			}
 			System.out.println("Attempting to solve 'standard' board:");
-			boolean[][] testStandard = { 
-					{ false, false, true, true, true, false, false },
-					{ false, false, true, true, true, false, false }, 
-					{ true, true, true, true, true, true, true },
-					{ true, true, true, false, true, true, true }, 
-					{ true, true, true, true, true, true, true },
+			boolean[][] testStandard = { { false, false, true, true, true, false, false },
+					{ false, false, true, true, true, false, false }, { true, true, true, true, true, true, true },
+					{ true, true, true, false, true, true, true }, { true, true, true, true, true, true, true },
 					{ false, false, true, true, true, false, false },
 					{ false, false, true, true, true, false, false } };
 			String standardSolution = getSolution(testStandard);
@@ -147,12 +141,9 @@ public class PegSolitaireTest {
 				System.out.println(Arrays.toString(standardBytes));
 			}
 			System.out.println("Attempting to solve 'rhombus' board:");
-			boolean[][] testRhombus = { 
-					{ false, false, false, true, false, false, false },
-					{ false, false, true, true, true, false, false }, 
-					{ false, true, true, true, true, true, false },
-					{ true, true, true, false, true, true, true }, 
-					{ false, true, true, true, true, true, false },
+			boolean[][] testRhombus = { { false, false, false, true, false, false, false },
+					{ false, false, true, true, true, false, false }, { false, true, true, true, true, true, false },
+					{ true, true, true, false, true, true, true }, { false, true, true, true, true, true, false },
 					{ false, false, true, true, true, false, false },
 					{ false, false, false, true, false, false, false } };
 			String rhombusSolution = getSolution(testRhombus);

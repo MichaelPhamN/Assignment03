@@ -1,181 +1,210 @@
-
 public class PegSolitaire {
-	public static boolean solve(boolean[][] pegs, StringStack solution){
-		for(int i = 0; i < 7; i++){
-			for(int j = 0; j < 7; j++){
-				if(pegs[i][j] == true){					
-					for(int k = 0; k < 4; k++){						
-						if(tryMove(pegs,i,j,k,solution)){
-							solve(pegs,solution);							
-						}
-					}
-
-				}
+	public static boolean solve(boolean[][] pegs, StringStack solution){		
+		if(run(pegs, solution)){
+			return true;			
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean run(boolean[][] pegs, StringStack solution){
+		int startX = 0, startY = 0, jumpX = 0, jumpY = 0, endX = 0, endY = 0;
+		if(run(pegs, startX, startY, jumpX, jumpY, endX, endY, solution)){
+			return true;		
+		}else{
+			return false;
+		}
+	}
+	
+	public static boolean run(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY ,int endX, int endY, StringStack solution){		
+		if(checkMove(pegs, endX, endY,solution)){
+			run(pegs, solution);
+		}else{	
+			if((endX == pegs.length - 1) && (endY == pegs.length - 1) && pegs[3][3] == true){
+				return true;
 			}
-		}	
-		if(isSolve(pegs)){
-			return true;
+			
+			startX = endX;
+			startY = endY;
+			endX = endX + jumpX;
+			endY = endY + jumpY;
+			
+			if (tryJump(pegs, startX, startY, -1, 0, endX, endY, solution)) {
+				return true;
+			}
+			
+			if (tryJump(pegs, startX, startY, 1, 0, endX, endY, solution)) {
+				return true;
+			}
+			
+			if (tryJump(pegs, startX, startY, 0, 1, endX, endY, solution)) {
+				return true;
+			}			
 		}
 		return false;
 	}
-
-	private static boolean tryMove(boolean[][] pegs, int x, int y, int k, StringStack solution) {
-		int newX = getNewX(x,k);
-		int newY = getNewY(y,k);	
-		if(newX == x && newY == y)
+	
+	public static boolean tryJump(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
+		if (endX < 0 || endX >= pegs.length || 
+				endY < 0 || endY >= pegs[endX].length) {
 			return false;
-		if(checkMove(pegs, x, y, newX, newY )){
-			pegs[newX][newY] = true;
-			pegs[x][y] = false;
-			pegs[(x + newX) / 2][(y + newY) / 2] = false;			
-			String str = "(" + x +", " +y +") -> (" + newX + ", " + newY +")";
+		}
+		
+		if(startX == endX + jumpX && startY == endY + jumpY){
+			return false;
+		}
+		
+		if(run(pegs, startX, startY, jumpX, jumpY, endX, endY, solution)){
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static boolean checkMove(boolean[][] pegs, int startX, int startY, StringStack solution){
+		if(startX < 0 || startX >= pegs.length || startX < 0 || startY > pegs.length){
+			return false;
+		}
+		
+		if (tryMove(pegs, startX, startY, startX - 2, startY, startX  - 2, startY, solution)) {
+			return true;
+		}
+		
+		if (tryMove(pegs, startX, startY, startX + 2, startY, startX + 2, startY, solution)) {
+			return true;
+		}
+		
+		if (tryMove(pegs, startX, startY, startX, startY  - 2, startX, startY - 2, solution)) {
+			return true;
+		}
+		
+		if (tryMove(pegs, startX, startY, startX, startY + 2, startX, startY + 2, solution)) {
+			return true;
+		}		
+		
+		return false;
+			
+	}
+	
+	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution) {
+		if(startX == endX && startY == endY){
+			return false;
+		}	
+		
+		if(isSwitch(pegs, startX, startY, endX, endY )){
+			pegs[endX][endY] = true;
+			pegs[startX][startY] = false;
+			pegs[(startX + endX) / 2][(startY + endY) / 2] = false;			
+			String str = "(" + startX + ", " + startY + ") -> (" + endX + ", " + endY +")";
 			solution.push(str);
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean isSolve(boolean[][] pegs){
-		int count = 0;
-		for(int i = 0; i < 7; i++){
-			for(int j = 0; j < 7; j++){
-				if(pegs[i][j] == true){
-					count++;
-				}
-			}
-		}
-		
-		if(count == 1 && pegs[3][3] == true){
-			return true;
-		}
-		return false;
-	}
 	
-	private static boolean checkMove(boolean[][] pegs, int x, int y, int newX, int newY){
-		if(newX < 0 || newX >= pegs.length || newY < 0 || newY >= pegs.length){
+	private static boolean isSwitch(boolean[][] pegs, int startX, int startY, int endX, int endY){
+		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
 			return false;
 		}
 		
-		if(newX == 0 && newY == 0){
+		if(endX == 0 && endY == 0){
 			return false;
 		}
 		
 		// Jump to point (0,1)
-		if(newX == 0 && newY == 1){
+		if(endX == 0 && endY == 1){
 			return false;
 		}
 		
 		// Jump to point (1,0)
-		if(newX == 1 && newY == 0){
+		if(endX == 1 && endY == 0){
 			return false;
 		}
 		
 		// Jump to point (1, 1)
-		if(newX == 1 && newY == 1){
+		if(endX == 1 && endY == 1){
 			return false;
 		}
 		
 		// Jump to point (7,7)
-		if(newX == 7 && newY == 7){
+		if(endX == 7 && endY == 7){
 			return false;
 		}
 		
 		// Jump to point (7, 6)
-		if(newX == 7 && newY == 6){
+		if(endX == 7 && endY == 6){
 			return false;
 		}
 		
 		// Jump to point (6,7)
-		if(newX == 6 && newY == 7){
+		if(endX == 6 && endY == 7){
 			return false;
 		}
 		
 		// Jump to point (6, 6)
-		if(newX == 6 && newY == 6){
+		if(endX == 6 && endY == 6){
 			return false;
 		}
 		
 		
 		// Jump to point (7,0)
-		if(newX == 7 && newY == 0){
+		if(endX == 7 && endY == 0){
 			return false;
 		}
 		
 		// Jump to point (7, 1)
-		if(newX == 7 && newY == 1){
+		if(endX == 7 && endY == 1){
 			return false;
 		}
 		
 		// Jump to point (6,0)
-		if(newX == 6 && newY == 0){
+		if(endX == 6 && endY == 0){
 			return false;
 		}
 		
 		// Jump to point (6, 1)
-		if(newX == 6 && newY == 1){
+		if(endX == 6 && endY == 1){
 			return false;
 		}
 		
 		// Jump to point (0,7)
-		if(newX == 0 && newY == 7){
+		if(endX == 0 && endY == 7){
 			return false;
 		}
 		
 		// Jump to point (0, 6)
-		if(newX == 0 && newY == 6){
+		if(endX == 0 && endY == 6){
 			return false;
 		}
 		
 		// Jump to point (1,7)
-		if(newX == 1 && newY == 7){
+		if(endX == 1 && endY == 7){
 			return false;
 		}
 		
 		// Jump to point (1, 6)
-		if(newX == 1 && newY == 6){
+		if(endX == 1 && endY == 6){
 			return false;
 		}
 		
-		return  pegs[newX][newY] == false
-                && pegs[(x + newX) / 2][(y + newY) / 2] == true
-                && pegs[x][y] == true;
+		return  pegs[endX][endY] == false
+                && pegs[(startX + endX) / 2][(startY + endY) / 2] == true
+                && pegs[startX][startY] == true;
 	}
-
-	private static int getNewX(int x, int k) {
-		int newX = x;
-		if(k == 1){        	 
-			newX =  newX + 2;
-		}else if(k == 0){
-			newX =  newX - 2;
-		}
-		return newX;
-	}
-
-	private static int getNewY(int y, int k) {
-		int newY = y;
-		if(k == 2){        	 
-			newY =  newY - 2;
-		}else if(k == 3){
-			newY =  newY + 2;
-		}		
-
-		return newY;
-	}
-
-	public static void main(String[] args) {
+	
+	public static void main(String[] args){
+//		StringStack stack = new StringStack(); // Empty stack
 		boolean[][] testPlus = { 
-				{ false, false, false, false, false, false, false },
 				{ false, false, false, true, false, false, false },
-				{ false, false, false, true, false, false, false }, 
-				{ false, true, true, true, true, true, false },
-				{ false, false, false, true, false, false, false },
-				{ false, false, false, true, false, false, false },
+				{ false, false, false, false,  false, false, false },
+				{ false, false, false, false,  false, false, false }, 
+				{ false, true,  true,  true,  true,  true,  false },
+				{ false, false, false, true,  false, false, false },
+				{ false, false, false, true,  false, false, false },
 				{ false, false, false, false, false, false, false } };
-		String simpleSolution = getSolution(testPlus);
-		System.out.println(simpleSolution);
-		if ("(1, 3) -> (3, 3)".equals(simpleSolution) || "(3, 1) -> (3, 3)".equals(simpleSolution)) {
-			System.out.println("Your code correctly found the solution to a simple board! 10/10");			
-		}
+		String plusSolution = getSolution(testPlus);
+		System.out.println(plusSolution);
 	}
 	
 	public static String getSolution(boolean[][] board) {
@@ -190,4 +219,5 @@ public class PegSolitaire {
 		}
 		return null;
 	}
+
 }
