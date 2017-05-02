@@ -33,13 +33,17 @@ public class PegSolitaire {
 				return true;
 			}
 			
+			if (tryJump(pegs, startX, startY, 0, 1, endX, endY, solution)) {
+				return true;
+			}
+			
 			if (tryJump(pegs, startX, startY, 1, 0, endX, endY, solution)) {
 				return true;
 			}
 			
-			if (tryJump(pegs, startX, startY, 0, 1, endX, endY, solution)) {
+			if (tryJump(pegs, startX, startY, 0, -1, endX, endY, solution)) {
 				return true;
-			}			
+			}		
 		}
 		return false;
 	}
@@ -87,26 +91,13 @@ public class PegSolitaire {
 	}
 	
 	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution) {
+		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
+			return false;
+		}		
+		
 		if(startX == endX && startY == endY){
 			return false;
 		}	
-		
-		if(isSwitch(pegs, startX, startY, endX, endY )){
-			pegs[endX][endY] = true;
-			pegs[startX][startY] = false;
-			pegs[(startX + endX) / 2][(startY + endY) / 2] = false;			
-			String str = "(" + startX + ", " + startY + ") -> (" + endX + ", " + endY +")";
-			solution.push(str);
-			return true;
-		}
-		return false;
-	}
-	
-	
-	private static boolean isSwitch(boolean[][] pegs, int startX, int startY, int endX, int endY){
-		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
-			return false;
-		}
 		
 		if(endX == 0 && endY == 0){
 			return false;
@@ -146,7 +137,6 @@ public class PegSolitaire {
 		if(endX == 6 && endY == 6){
 			return false;
 		}
-		
 		
 		// Jump to point (7,0)
 		if(endX == 7 && endY == 0){
@@ -188,17 +178,28 @@ public class PegSolitaire {
 			return false;
 		}
 		
-		return  pegs[endX][endY] == false
+		if(pegs[endX][endY] == false
                 && pegs[(startX + endX) / 2][(startY + endY) / 2] == true
-                && pegs[startX][startY] == true;
-	}
+                && pegs[startX][startY] == true){
+			pegs[endX][endY] = true;
+			pegs[startX][startY] = false;
+			pegs[(startX + endX) / 2][(startY + endY) / 2] = false;			
+			String str = "(" + startX + ", " + startY + ") -> (" + endX + ", " + endY +")";
+			solution.push(str);
+			return true;
+		}				
+		
+		return false;
+	}	
+	
+	
 	
 	public static void main(String[] args){
 //		StringStack stack = new StringStack(); // Empty stack
 		boolean[][] testPlus = { 
-				{ false, false, false, true, false, false, false },
-				{ false, false, false, false,  false, false, false },
-				{ false, false, false, false,  false, false, false }, 
+				{ false, false, false, false, false, false, false },
+				{ false, false, false, true,  false, false, false },
+				{ false, false, false, true,  false, false, false }, 
 				{ false, true,  true,  true,  true,  true,  false },
 				{ false, false, false, true,  false, false, false },
 				{ false, false, false, true,  false, false, false },
