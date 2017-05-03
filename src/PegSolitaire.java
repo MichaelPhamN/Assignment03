@@ -1,8 +1,8 @@
 
 public class PegSolitaire {
-	public static boolean solve(boolean[][] pegs){
-		
-	}
+//	public static boolean solve(boolean[][] pegs){
+//		
+//	}
 	
 	public static boolean solve(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, int move){
 		if (pegs.length*pegs[0].length == move) {
@@ -108,9 +108,9 @@ public class PegSolitaire {
 		startX = jumpX;
 		startY = jumpY;
 		
-		if (solve(board, newX, newY, move)) {
-			return true;
-		}
+//		if (solve(board, newX, newY, move)) {
+//			return true;
+//		}
 		
 		return false;
 		
