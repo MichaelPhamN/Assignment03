@@ -35,15 +35,16 @@ public class PegSolitaire {
 		}
 		
 		if (newX < 6){
-			return solve(pegs, newX + 1, newY, solution);
+			solve(pegs, newX + 1, newY, solution);
 		}else{
-			return solve(pegs, 0, newY + 1, solution);
-		}
+			solve(pegs, 0, newY + 1, solution);
+		}		
+		return false;
 		
 	}
 	
 	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
-		System.out.println("Try move " + startX + " " + startY + " " + jumpX + " " + jumpY + " " + endX + " " + endY);
+//		System.out.println("Try move " + startX + " " + startY + " " + jumpX + " " + jumpY + " " + endX + " " + endY);
 		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
 			return false;
 		}
@@ -126,27 +127,32 @@ public class PegSolitaire {
 		// (6, 6)
 		if(endX == 6 && endY == 6){
 			return false;
-		}	
+		}
 		
+		// Dung
 		if(pegs[endX][endY] == false
                 && pegs[jumpX][jumpY] == true
                 && pegs[startX][startY] == true){
 			pegs[endX][endY] = true;
 			pegs[startX][startY] = false;
-			pegs[jumpX][jumpY] = false;			
+			pegs[jumpX][jumpY] = false;		
 			String str = "(" + startX + ", " + startY + ") -> (" + endX + ", " + endY +")";
+			System.out.println("jump " + str);
 			solution.push(str);		
-			return solve(pegs, solution);
+			for (int i = 0; i < pegs.length; i++) {
+				for (int j = 0; j < pegs.length; j++) {
+					if(pegs[i][j]  == false)
+						System.out.print("false ");
+					else
+						System.out.print("true ");
+				}
+				System.out.println();
+			}
 		}
 		
-		//It made my code loop
-		// Recursively try to solve from here		
-//		if(solve(pegs, solution)){
-//			return true;
-//		}
 		
 		
-		// Undo the move
+//		 Undo the move		
 //		pegs[endX][endY] = false;
 //		pegs[startX][startY] = true;
 //		pegs[jumpX][jumpY] = true;			
@@ -183,9 +189,11 @@ public class PegSolitaire {
 	
 	public static void main(String[] args){
 		System.out.println("Attempting to solve 'plus' board:");
-		boolean[][] testPlus = { { false, false, false, false, false, false, false },
+		boolean[][] testPlus = { 
+				{ false, false, false, false, false, false, false },
 				{ false, false, false, true, false, false, false },
-				{ false, false, false, true, false, false, false }, { false, true, true, true, true, true, false },
+				{ false, false, false, true, false, false, false }, 
+				{ false, true, true, true, true, true, false },
 				{ false, false, false, true, false, false, false },
 				{ false, false, false, true, false, false, false },
 				{ false, false, false, false, false, false, false } };

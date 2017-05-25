@@ -51,7 +51,8 @@ public class PegSolitaireTest {
 						"Couldn't find PegSolitaire.java! Run this from the same Eclipse project as PegSolitaire with no package.");
 			}
 
-			boolean[][] testSimple = { { false, false, false, false, false, false, false },
+			boolean[][] testSimple = { 
+					{ false, false, false, false, false, false, false },
 					{ false, false, false, false, false, false, false },
 					{ false, false, false, false, false, false, false },
 					{ false, true, true, false, false, false, false },
