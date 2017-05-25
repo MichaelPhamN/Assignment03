@@ -8,18 +8,6 @@ public class PegSolitaire {
 		return false;
 	}
 	
-	public static int pegCount(boolean[][] pegs) {
-		int count = 0; 
-		for(int i = 0; i < pegs.length; i++){
-			for(int j = 0; j < pegs[0].length; j++){
-				if(pegs[i][j] == true){
-					count = count + 1;
-				} 
-			}
-		}
-		return count;
-	}
-	
 	public static boolean solve(boolean[][] pegs, int newX, int newY, StringStack solution){		
 		// If board is solved
 		if (pegCount(pegs) == 1 && pegs[3][3] == true){
@@ -51,8 +39,7 @@ public class PegSolitaire {
 	
 	}
 	
-	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){	
-		System.out.println("tryMove " + startX + " " + startY + " " + jumpX + " " + jumpY + " " + endX + " " + endY);
+	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
 		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
 			return false;
 		}
@@ -146,17 +133,32 @@ public class PegSolitaire {
 			return solve(pegs, solution);
 		}
 		
-		// Recursively try to solve from here
-//		if(solve(pegs, endX, endY, solution)){
+		//It made my code loop
+		// Recursively try to solve from here		
+//		if(solve(pegs, solution)){
 //			return true;
 //		}
+		
+		
 		// Undo the move
-//		pegs[endX][endY] = false;
-//		pegs[startX][startY] = true;
-//		pegs[jumpX][jumpY] = true;			
-//		solution.pop();
+		pegs[endX][endY] = false;
+		pegs[startX][startY] = true;
+		pegs[jumpX][jumpY] = true;			
+		solution.pop();
 		
 		return false;
+	}
+	
+	public static int pegCount(boolean[][] pegs) {
+		int count = 0; 
+		for(int i = 0; i < pegs.length; i++){
+			for(int j = 0; j < pegs[0].length; j++){
+				if(pegs[i][j] == true){
+					count = count + 1;
+				} 
+			}
+		}
+		return count;
 	}
 	
 	
@@ -174,22 +176,67 @@ public class PegSolitaire {
 	}
 	
 	public static void main(String[] args){
-		boolean[][] testSimple = { { false, false, false, false, false, false, false },
+		//This test run perfectly
+//		boolean[][] testSimple = { { false, false, false, false, false, false, false },
+//				{ false, false, false, false, false, false, false },
+//				{ false, false, false, false, false, false, false },
+//				{ false, true, true, false, false, false, false },
+//				{ false, false, false, false, false, false, false },
+//				{ false, false, false, false, false, false, false },
+//				{ false, false, false, false, false, false, false } };
+//		String simpleSolution = getSolution(testSimple);
+//		if ("(1, 3) -> (3, 3)".equals(simpleSolution) || "(3, 1) -> (3, 3)".equals(simpleSolution)) {
+//			System.out.println("Your code correctly found the solution to a simple board! 10/10");			
+//		} else {
+//			System.out.println(
+//					"Your code couldn't find a solution to a simple board requiring one move, so I'm exiting now with 0 points.");
+//			System.out.println("Solution seen: "+simpleSolution);
+//			return;
+//		}
+		
+		//Error because it is not recursive
+		boolean[][] testUnsolvable = { 
 				{ false, false, false, false, false, false, false },
-				{ false, false, false, false, false, false, false },
-				{ false, true, true, false, false, false, false },
+				{ false, false, true, true, false, false, false },
+				{ false, true, false, false, false, false, false },
+				{ false, false, true, false, false, false, false },
 				{ false, false, false, false, false, false, false },
 				{ false, false, false, false, false, false, false },
 				{ false, false, false, false, false, false, false } };
-		String simpleSolution = getSolution(testSimple);
-		if ("(1, 3) -> (3, 3)".equals(simpleSolution) || "(3, 1) -> (3, 3)".equals(simpleSolution)) {
-			System.out.println("Your code correctly found the solution to a simple board! 10/10");			
-		} else {
+		String unsolvableSolution = getSolution(testUnsolvable);
+		if (unsolvableSolution != null) {
 			System.out.println(
-					"Your code couldn't find a solution to a simple board requiring one move, so I'm exiting now with 0 points.");
-			System.out.println("Solution seen: "+simpleSolution);
-			return;
+					"You found a solution to an unsolvable board! You are either allowing moves into the corners or have some other bugs. 0/10");
+		} else {
+			System.out.println("You didn't find a solution to a simple unsolvable board! 10/10");
+//			points += 10;
 		}
+		
+		//Error because it is not recursive
+//		System.out.println("Attempting to solve 'plus' board:");
+//		boolean[][] testPlus = { { false, false, false, false, false, false, false },
+//				{ false, false, false, true, false, false, false },
+//				{ false, false, false, true, false, false, false }, { false, true, true, true, true, true, false },
+//				{ false, false, false, true, false, false, false },
+//				{ false, false, false, true, false, false, false },
+//				{ false, false, false, false, false, false, false } };
+//		String plusSolution = getSolution(testPlus);
+//		if (plusSolution != null) {
+//			String plusSolution1 = "(3, 2) -> (3, 0), (3, 4) -> (3, 2), (1, 3) -> (3, 3), (3, 3) -> (3, 1), (3, 0) -> (3, 2), (5, 3) -> (3, 3), (3, 2) -> (3, 4), (3, 5) -> (3, 3)";
+//			String plusSolution2 = "(2, 3) -> (0, 3), (4, 3) -> (2, 3), (3, 1) -> (3, 3), (3, 3) -> (1, 3), (0, 3) -> (2, 3), (3, 5) -> (3, 3), (2, 3) -> (4, 3), (5, 3) -> (3, 3)";
+//			if (plusSolution1.equals(plusSolution)) {
+//				System.out.println("Correct solution to the plus board! 30/30");
+////				points += 30;
+//			} else if (plusSolution2.equals(plusSolution)) {
+//				System.out.println("It looks like you're scanning column by column instead of row by row! 25/30");
+////				points += 25;
+//			} else {
+//				System.out.println("Unexpected solution! 0/30");
+//				System.out.println(plusSolution);
+//			}
+//		} else {
+//			System.out.println("Your code didn't find a solution! 0/30");
+//		}
 	}
 
 }
