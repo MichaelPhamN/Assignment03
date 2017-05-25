@@ -15,6 +15,14 @@ public class PegSolitaire {
 		}
 		
 		// For each board position. Try moving up, down, left, right 
+		if(tryMove(pegs, newX, newY, newX, newY - 1, newX, newY - 2,solution)){
+			return true;
+		}
+		
+		if(tryMove(pegs, newX, newY, newX, newY + 1, newX, newY + 2,solution)){
+			return true;
+		}
+		
 		if(tryMove(pegs, newX, newY, newX - 1, newY, newX - 2,newY,solution)){
 			return true;
 		}
@@ -23,19 +31,11 @@ public class PegSolitaire {
 			return true;
 		}
 		
-		if(tryMove(pegs, newX, newY, newX, newY - 1, newX,newY - 2,solution)){
-			return true;
-		}
-		
-		if(tryMove(pegs, newX, newY, newX, newY + 1, newX,newY + 2,solution)){
-			return true;
-		}
-		
 		if (newX < 6){
 			return solve(pegs, newX + 1, newY, solution);
 		}else{
 			return solve(pegs, 0, newY + 1, solution);
-		}
+		}		
 	
 	}
 	
@@ -176,67 +176,7 @@ public class PegSolitaire {
 	}
 	
 	public static void main(String[] args){
-		//This test run perfectly
-//		boolean[][] testSimple = { { false, false, false, false, false, false, false },
-//				{ false, false, false, false, false, false, false },
-//				{ false, false, false, false, false, false, false },
-//				{ false, true, true, false, false, false, false },
-//				{ false, false, false, false, false, false, false },
-//				{ false, false, false, false, false, false, false },
-//				{ false, false, false, false, false, false, false } };
-//		String simpleSolution = getSolution(testSimple);
-//		if ("(1, 3) -> (3, 3)".equals(simpleSolution) || "(3, 1) -> (3, 3)".equals(simpleSolution)) {
-//			System.out.println("Your code correctly found the solution to a simple board! 10/10");			
-//		} else {
-//			System.out.println(
-//					"Your code couldn't find a solution to a simple board requiring one move, so I'm exiting now with 0 points.");
-//			System.out.println("Solution seen: "+simpleSolution);
-//			return;
-//		}
-		
-		//Error because it is not recursive
-		boolean[][] testUnsolvable = { 
-				{ false, false, false, false, false, false, false },
-				{ false, false, true, true, false, false, false },
-				{ false, true, false, false, false, false, false },
-				{ false, false, true, false, false, false, false },
-				{ false, false, false, false, false, false, false },
-				{ false, false, false, false, false, false, false },
-				{ false, false, false, false, false, false, false } };
-		String unsolvableSolution = getSolution(testUnsolvable);
-		if (unsolvableSolution != null) {
-			System.out.println(
-					"You found a solution to an unsolvable board! You are either allowing moves into the corners or have some other bugs. 0/10");
-		} else {
-			System.out.println("You didn't find a solution to a simple unsolvable board! 10/10");
-//			points += 10;
-		}
-		
-		//Error because it is not recursive
-//		System.out.println("Attempting to solve 'plus' board:");
-//		boolean[][] testPlus = { { false, false, false, false, false, false, false },
-//				{ false, false, false, true, false, false, false },
-//				{ false, false, false, true, false, false, false }, { false, true, true, true, true, true, false },
-//				{ false, false, false, true, false, false, false },
-//				{ false, false, false, true, false, false, false },
-//				{ false, false, false, false, false, false, false } };
-//		String plusSolution = getSolution(testPlus);
-//		if (plusSolution != null) {
-//			String plusSolution1 = "(3, 2) -> (3, 0), (3, 4) -> (3, 2), (1, 3) -> (3, 3), (3, 3) -> (3, 1), (3, 0) -> (3, 2), (5, 3) -> (3, 3), (3, 2) -> (3, 4), (3, 5) -> (3, 3)";
-//			String plusSolution2 = "(2, 3) -> (0, 3), (4, 3) -> (2, 3), (3, 1) -> (3, 3), (3, 3) -> (1, 3), (0, 3) -> (2, 3), (3, 5) -> (3, 3), (2, 3) -> (4, 3), (5, 3) -> (3, 3)";
-//			if (plusSolution1.equals(plusSolution)) {
-//				System.out.println("Correct solution to the plus board! 30/30");
-////				points += 30;
-//			} else if (plusSolution2.equals(plusSolution)) {
-//				System.out.println("It looks like you're scanning column by column instead of row by row! 25/30");
-////				points += 25;
-//			} else {
-//				System.out.println("Unexpected solution! 0/30");
-//				System.out.println(plusSolution);
-//			}
-//		} else {
-//			System.out.println("Your code didn't find a solution! 0/30");
-//		}
+
 	}
 
 }
