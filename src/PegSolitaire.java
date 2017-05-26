@@ -43,8 +43,7 @@ public class PegSolitaire {
 		
 	}
 	
-	private static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
-//		System.out.println("Try move " + startX + " " + startY + " " + jumpX + " " + jumpY + " " + endX + " " + endY);
+	public static boolean tryMove(boolean[][] pegs, int startX, int startY, int jumpX, int jumpY, int endX, int endY, StringStack solution){
 		if(endX < 0 || endX >= pegs.length || endY < 0 || endY >= pegs.length){
 			return false;
 		}
@@ -149,16 +148,22 @@ public class PegSolitaire {
 		return false;
 	}
 	
-	public static int pegCount(boolean[][] pegs) {
-		int count = 0; 
-		for(int i = 0; i < pegs.length; i++){
-			for(int j = 0; j < pegs[0].length; j++){
-				if(pegs[i][j] == true){
-					count = count + 1;
-				} 
-			}
-		}
-		return count;
+	public static int pegCount(boolean[][] pegs){
+		int startX = 0, startY = 0, count = 0;
+		return pegCount(pegs, startX, startY, count);			
 	}
-
+	
+	public static int pegCount(boolean[][] pegs, int newX, int newY, int count){		
+		if (pegs[newX][newY] == true){
+			count = count + 1;
+		}
+		
+		if (newX < 6){
+			return pegCount(pegs, newX + 1, newY, count);
+		}
+		if(newX >= 6 && newY <6){			
+			return pegCount(pegs, 0, newY + 1, count);						
+		}
+		return count;		
+	}
 }
